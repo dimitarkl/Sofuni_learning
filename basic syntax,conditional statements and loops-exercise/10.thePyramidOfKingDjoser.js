@@ -1,5 +1,4 @@
 Pyramid(10,1);
-//80/100 to4ki
 function Pyramid(base,increment)
 {
     let stone=0;
