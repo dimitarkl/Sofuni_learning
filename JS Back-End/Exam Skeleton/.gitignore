@@ -128,3 +128,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+# I don’t want to show my secrets
+/src/config/SECRET.js
