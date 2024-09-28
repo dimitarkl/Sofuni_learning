@@ -53,7 +53,12 @@ router.get('/recipe/:recipeId/recommend', async (req, res) => {
 
 })
 
-router.get('/router/:recipeId/delete', (req, res) => {
-
+router.get('/recipe/:recipeId/delete', async (req, res) => {
+    try {
+        await recipeService.delete(req.params.recipeId)
+        res.redirect('/')
+    } catch (err) {
+        res.redirect('/', { error: getErrorMessage(err) })
+    }
 })
 module.exports = router;
