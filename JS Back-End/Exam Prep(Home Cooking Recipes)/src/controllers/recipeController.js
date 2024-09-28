@@ -32,15 +32,25 @@ router.post('/recipe/create', isAuth, async (req, res) => {
 router.get('/recipe/:recipeId', async (req, res) => {
     const recipeId = req.params.recipeId;
     const recipe = await recipeService.getOne(recipeId).lean()
-    const userId = req.user._id
+    const userId = req?.user?._id
     let isOwner = false;
     if (recipe.owner == userId) isOwner = true;
-    let hasRecommended = recipeService.checkRecommendation(recipe.recommendList)
-    recipe.recommendList.forEach((recommenders) => {
-        if (userId == recommenders)
-            hasRecommended = true
-    })
+    const hasRecommended = recipeService.checkRecommendation(recipe.recommendList, userId)
     res.render('details', { recipe, isOwner, hasRecommended })
+})
+
+router.get('/recipe/:recipeId/recommend', async (req, res) => {
+    const recipeId = req.params.recipeId;
+    const userId = req.user._id;
+    const recipe = await recipeService.getOne(recipeId).lean()
+    try {
+        await recipeService.recommend(recipeId, userId)
+        res.redirect(`/recipe/${recipeId}`)
+    }
+    catch (err) {
+        res.render(`details`, { recipe, error: getErrorMessage(err) })
+    }
+
 })
 
 module.exports = router;
