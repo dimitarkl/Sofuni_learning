@@ -1,0 +1,10 @@
+{{#each recipes}}
+<article class="recipe">
+    <img src="{{image}}" alt="{{title}}">
+    <h3>{{title}}</h3>
+    <p>{{description}}</p>
+    <a href="/recipe/{{_id}}">Read More</a>
+</article>
+{{else}}
+<p class="no-post">There are no recipes found yet!</p>
+{{/each}}
