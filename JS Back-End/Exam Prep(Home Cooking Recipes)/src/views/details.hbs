@@ -19,9 +19,16 @@
 </article>
 
 <div class="command">
+    {{#if isAuthenticated}}
+    {{#if isOwner}}
     <a href="/recipe/{{recipe._id}}/edit">Edit</a>
     <a href="/recipe/{{recipe._id}}/delete">Delete</a>
-
+    {{/if}}
+    {{#if hasRecommended}}
+    <p>You've already recommended this recipe!</p>
+    {{else}}
     <a href="/recipe/{{recipe._id}}/recommend">Recommend</a>
-    <!--<p>You've already recommended this recipe!</p>!-->
+    {{/if}}
+    {{/if}}
+
 </div>
