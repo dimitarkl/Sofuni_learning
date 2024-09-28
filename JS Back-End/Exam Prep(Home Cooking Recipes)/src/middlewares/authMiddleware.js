@@ -1,5 +1,6 @@
 const jwt = require('../lib/jwt')
 const SECRET = require('../config/SECRET')
+const recipeService = require('../services/recipeService')
 
 exports.authMiddleware = async (req, res, next) => {
     const token = req.cookies['auth']
@@ -22,5 +23,14 @@ exports.isAuth = (req, res, next) => {
     if (!req.user) {
         return res.redirect('/auth/login')
     }
+    next()
+}
+exports.isOwner = async (req, res, next) => {
+
+    if (!req.user_id || !req.params.recipeId) return res.redirect('/')
+    const recipe = await recipeService.getOne(req.params.recipeId)
+    console.log(req.user._id)
+    console.log(recipe.owner)
+    if (req.user_id != recipe.owner) return res.redirect('/')
     next()
 }

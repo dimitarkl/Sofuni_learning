@@ -10,11 +10,10 @@ exports.getOne = (recipeId) => Recipe.findById(recipeId);
 
 exports.checkRecommendation = (recipe, userId) => {
     const recList = recipe.recommendList
+    if (userId = recipe.owner) return true
     for (const recommender of recList) {
         if (userId == recommender)
             return true;
-        else if (userId == recipe.owner)
-            return true
     }
     return false;
 }

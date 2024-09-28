@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const recipeService = require('../services/recipeService')
-const { isAuth } = require('../middlewares/authMiddleware')
+const { isAuth, isOwner } = require('../middlewares/authMiddleware')
 const { getErrorMessage } = require('../utils/errorUtils')
 
 
@@ -53,12 +53,35 @@ router.get('/recipe/:recipeId/recommend', async (req, res) => {
 
 })
 
-router.get('/recipe/:recipeId/delete', async (req, res) => {
+router.get('/recipe/:recipeId/delete', isAuth, async (req, res) => {
+    const recipeId = req.params.recipeId;
+    const recipe = await recipeService.getOne(recipeId).lean()
+    if (req.user._id != recipe.owner) return res.redirect(`/recipe/${recipeId}`)
     try {
         await recipeService.delete(req.params.recipeId)
         res.redirect('/')
     } catch (err) {
         res.redirect('/', { error: getErrorMessage(err) })
     }
+
+})
+
+router.get('/recipe/:recipeId/edit', isAuth, async (req, res) => {
+    const recipeId = req.params.recipeId;
+    const recipe = await recipeService.getOne(recipeId).lean()
+
+    if (req.user._id != recipe.owner) return res.redirect(`/recipe/${recipeId}`)
+
+    res.render('edit', { recipe })
+})
+
+router.post('/recipe/:recipeId/edit', isAuth, async (req, res) => {
+    const recipeId = req.params.recipeId;
+    const recipe = await recipeService.getOne(recipeId).lean()
+
+    if (req.user._id != recipe.owner) return res.redirect(`/recipe/${recipeId}`)
+
+    await recipeService.edit(recipeId, req.body)
+    res.redirect(`/recipe/${recipeId}`)
 })
 module.exports = router;
