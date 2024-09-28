@@ -7,4 +7,9 @@ const recipeController = require('./controllers/recipeController')
 router.use(homeController)
 router.use('/auth', authController)
 router.use(recipeController)
+
+router.get('*', (req, res) => {
+    res.redirect('/404');
+});
+
 module.exports = router

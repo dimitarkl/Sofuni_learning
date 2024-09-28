@@ -27,4 +27,13 @@ exports.recommend = async (recipeId, userId) => {
 
 }
 exports.edit = (recipeId, recipeData) => Recipe.findByIdAndUpdate(recipeId, recipeData)
+
 exports.delete = (recipeId) => Recipe.findByIdAndDelete(recipeId)
+
+exports.search = async (title) => {
+    let result = await Recipe.find().lean();
+    if (title) {
+        result = result.filter(recipe => recipe.title.toLowerCase().includes(title.toLowerCase()));
+    }
+    return result;
+}

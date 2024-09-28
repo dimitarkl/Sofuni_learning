@@ -25,12 +25,3 @@ exports.isAuth = (req, res, next) => {
     }
     next()
 }
-exports.isOwner = async (req, res, next) => {
-
-    if (!req.user_id || !req.params.recipeId) return res.redirect('/')
-    const recipe = await recipeService.getOne(req.params.recipeId)
-    console.log(req.user._id)
-    console.log(recipe.owner)
-    if (req.user_id != recipe.owner) return res.redirect('/')
-    next()
-}

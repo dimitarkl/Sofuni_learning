@@ -39,7 +39,7 @@ router.get('/recipe/:recipeId', async (req, res) => {
     res.render('details', { recipe, isOwner, hasRecommended })
 })
 
-router.get('/recipe/:recipeId/recommend', async (req, res) => {
+router.get('/recipe/:recipeId/recommend', isAuth, async (req, res) => {
     const recipeId = req.params.recipeId;
     const userId = req.user._id;
     const recipe = await recipeService.getOne(recipeId).lean()
@@ -84,4 +84,6 @@ router.post('/recipe/:recipeId/edit', isAuth, async (req, res) => {
     await recipeService.edit(recipeId, req.body)
     res.redirect(`/recipe/${recipeId}`)
 })
+
+
 module.exports = router;
