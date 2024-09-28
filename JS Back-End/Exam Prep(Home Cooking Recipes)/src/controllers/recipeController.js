@@ -35,7 +35,7 @@ router.get('/recipe/:recipeId', async (req, res) => {
     const userId = req?.user?._id
     let isOwner = false;
     if (recipe.owner == userId) isOwner = true;
-    const hasRecommended = recipeService.checkRecommendation(recipe.recommendList, userId)
+    const hasRecommended = recipeService.checkRecommendation(recipe, userId)
     res.render('details', { recipe, isOwner, hasRecommended })
 })
 
@@ -53,4 +53,7 @@ router.get('/recipe/:recipeId/recommend', async (req, res) => {
 
 })
 
+router.get('/router/:recipeId/delete', (req, res) => {
+
+})
 module.exports = router;

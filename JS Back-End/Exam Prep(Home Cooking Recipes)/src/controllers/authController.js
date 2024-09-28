@@ -6,7 +6,7 @@ const { getErrorMessage } = require('../utils/errorUtils');
 
 router.get('/register', (req, res) => {
     if (!res.locals.isAuthenticated) res.render('auth/register')
-    res.redirect('/')
+    else res.redirect('/')
 })
 
 router.post('/register', async (req, res) => {
