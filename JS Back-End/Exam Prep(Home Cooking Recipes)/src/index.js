@@ -13,7 +13,7 @@ configHandlebars(app)
 
 app.use(routes)
 //TODO change database namer
-mongoose.connect('mongodb://localhost:27017/fortnite')
+mongoose.connect('mongodb://localhost:27017/home_recipe')
     .then(() => console.log('DB is connected'))
     .then(() => {
         app.listen(3000, () => console.log('Server running on: http://localhost:3000'))

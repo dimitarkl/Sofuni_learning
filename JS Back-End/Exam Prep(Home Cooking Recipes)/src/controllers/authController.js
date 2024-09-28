@@ -1,10 +1,12 @@
 const router = require('express').Router();
 
+const { isAuth } = require('../middlewares/authMiddleware');
 const authService = require('../services/authService');
 const { getErrorMessage } = require('../utils/errorUtils');
 
 router.get('/register', (req, res) => {
-    res.render('auth/register')
+    if (!res.locals.isAuthenticated) res.render('auth/register')
+    res.redirect('/')
 })
 
 router.post('/register', async (req, res) => {
@@ -28,15 +30,16 @@ router.post('/login', async (req, res) => {
     const loginData = req.body;
 
     try {
-        await authService.login(loginData)
-
+        const token = await authService.login(loginData)
+        res.cookie('auth', token);
+        //TODO for project
+        res.redirect('/')
     } catch (err) {
-        res.render('auth/login', { error: getErrorMessage(err) })
+        res.render('auth/login', { email: loginData.email, error: getErrorMessage(err) })
     }
 
-    res.cookie('auth', token);
-    //TODO for project
-    res.redirect('/')
+
+
 })
 
 router.get('/logout', (req, res) => {

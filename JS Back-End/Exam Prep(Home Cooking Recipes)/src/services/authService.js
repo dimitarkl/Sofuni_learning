@@ -16,8 +16,7 @@ exports.register = async (userData) => {
 }
 //TODO change according to project
 exports.login = async ({ email, password }) => {
-
-    const user = await User.find({ email })
+    const user = await User.findOne({ email })
     if (!user) throw new Error('Email or password is invalid')
 
     const isValid = await bcrypt.compare(password, user.password)
