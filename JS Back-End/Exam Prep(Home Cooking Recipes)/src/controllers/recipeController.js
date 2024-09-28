@@ -23,4 +23,11 @@ router.post('/recipe/create', isAuth, async (req, res) => {
 
 
 })
+
+router.get('/recipe/:recipeId', async (req, res) => {
+    const recipeId = req.params.recipeId;
+    const recipe = await recipeService.getOne(recipeId).lean()
+    res.render('details', { recipe })
+})
+
 module.exports = router;
