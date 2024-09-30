@@ -1,5 +1,5 @@
 const jwt = require('../lib/jwt')
-const SECRET = require('../config/SECRET')
+const { SECRET } = require('../config/SECRET')
 const recipeService = require('../services/recipeService')
 
 exports.authMiddleware = async (req, res, next) => {
